@@ -17,6 +17,7 @@ target_sources(
         "FigureTests/TriangleTests.cpp"
         "FactoryTests/StringFigureFactoryTests.cpp"
         "FactoryTests/StreamFigureFactoryTests.cpp"
+        "FactoryTests/RandomFigureFactoryTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)
