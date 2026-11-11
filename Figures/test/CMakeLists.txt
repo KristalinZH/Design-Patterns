@@ -15,6 +15,7 @@ target_sources(
         "CircleTests.cpp"
         "RectangleTests.cpp"
         "TriangleTests.cpp"
+        "StringFigureFactoryTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)

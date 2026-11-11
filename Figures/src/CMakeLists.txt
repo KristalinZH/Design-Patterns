@@ -11,16 +11,19 @@ target_sources(
         "Figures/Rectangle.hpp"
         "Figures/Utility/ParamValidation.hpp"
         "Figures/StringConvertible.hpp"
+        "Factories/StringFigureFactory.hpp"
         "Figures/Circle.cpp"
         "Figures/Triangle.cpp"
         "Figures/Rectangle.cpp"
         "Figures/Utility/ParamValidation.cpp"
+        "Factories/StringFigureFactory.cpp"
 
 )
 
 target_include_directories(
     figureslib
     PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/Factories"
         "${CMAKE_CURRENT_SOURCE_DIR}/Figures"
         "${CMAKE_CURRENT_SOURCE_DIR}/IO"
     PRIVATE
