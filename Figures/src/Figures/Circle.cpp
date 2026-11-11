@@ -4,7 +4,7 @@
 #include "Circle.hpp"
 #include "ParamValidation.hpp"
 
-Circle:: Circle(const double _radius) : radius(Validation::positiveFinite(_radius)){
+Circle::Circle(const double _radius) : radius(Validation::positiveFinite(_radius)){
     if (!std::isfinite(2.0 * std::numbers::pi * radius)) {
         throw std::overflow_error("Circle perimeter overflow");
     }
@@ -12,4 +12,8 @@ Circle:: Circle(const double _radius) : radius(Validation::positiveFinite(_radiu
 
 double Circle::perimeter() const {
     return 2.0 * std::numbers::pi * radius;
+}
+
+std::unique_ptr<Figure> Circle::clone() const {
+    return std::make_unique<Circle>(*this);
 }

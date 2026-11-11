@@ -28,3 +28,7 @@ Triangle::Triangle(const double _a, const double _b, const double _c) : a(Valida
 double Triangle::perimeter() const {
     return a + b + c;
 }
+
+std::unique_ptr<Figure> Triangle::clone() const {
+    return std::make_unique<Triangle>(*this);
+}
