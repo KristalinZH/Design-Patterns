@@ -10,6 +10,7 @@ target_sources(
         "Figures/Triangle.hpp"
         "Figures/Rectangle.hpp"
         "Figures/Utility/ParamValidation.hpp"
+        "Figures/StringConvertible.hpp"
         "Figures/Circle.cpp"
         "Figures/Triangle.cpp"
         "Figures/Rectangle.cpp"
