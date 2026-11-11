@@ -1,5 +1,5 @@
-#ifndef FIGURE_FACTORY
-#define FIGURE_FACTORY
+#ifndef STRING_FIGURE_FACTORY
+#define STRING_FIGURE_FACTORY
 
 #include <memory>
 #include <string>
