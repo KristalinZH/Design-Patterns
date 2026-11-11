@@ -12,11 +12,11 @@ target_link_libraries(
 target_sources(
     unit-tests
     PRIVATE
-        "CircleTests.cpp"
-        "RectangleTests.cpp"
-        "TriangleTests.cpp"
-        "StringFigureFactoryTests.cpp"
-        "StreamFigureFactoryTests.cpp"
+        "FigureTests/CircleTests.cpp"
+        "FigureTests/RectangleTests.cpp"
+        "FigureTests/TriangleTests.cpp"
+        "FactoryTests/StringFigureFactoryTests.cpp"
+        "FactoryTests/StreamFigureFactoryTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)
