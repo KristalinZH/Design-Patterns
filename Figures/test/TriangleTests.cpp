@@ -340,3 +340,117 @@ TEST_CASE("Triangle rejects perimeter overflow", "[perimeter overflow]") {
         );
     }
 }
+
+
+TEST_CASE("Triangle clone", "[prototype tests]")
+{
+    Triangle original(3.0, 4.0, 5.0);
+
+    SECTION("Clone is not nullptr")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned != nullptr);
+    }
+
+    SECTION("Clone has the same type")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(dynamic_cast<Triangle*>(cloned.get()) != nullptr);
+    }
+
+    SECTION("Clone has the same perimeter")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned->perimeter() == Catch::Approx(original.perimeter()));
+    }
+
+    SECTION("Clone is a different object")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned.get() != &original);
+    }
+}
+
+TEST_CASE("Triangle can be cloned polymorphically", "[prototype tests]")
+{
+    std::unique_ptr<Figure> original =
+        std::make_unique<Triangle>(4.0, 5.5234, 6.0);
+
+    auto cloned = original->clone();
+
+    REQUIRE(cloned != nullptr);
+    REQUIRE(dynamic_cast<Triangle*>(cloned.get()) != nullptr);
+    REQUIRE(cloned->perimeter() == Catch::Approx(original->perimeter()));
+    REQUIRE(cloned.get() != original.get());
+}
+
+TEST_CASE("Triangle to_string", "[to_string]")
+{
+    SECTION("Converts integer sides")
+    {
+        Triangle triangle(3.0, 4.0, 5.0);
+
+        REQUIRE(triangle.to_string() == "triangle 3 4 5");
+    }
+
+    SECTION("Converts fractional sides")
+    {
+        Triangle triangle(2.5, 3.5, 4.5);
+
+        REQUIRE(triangle.to_string() == "triangle 2.5 3.5 4.5");
+    }
+
+    SECTION("Converts equal sides")
+    {
+        Triangle triangle(5.0, 5.0, 5.0);
+
+        REQUIRE(triangle.to_string() == "triangle 5 5 5");
+    }
+}
+
+TEST_CASE("Triangle to_string preserves double precision", "[to_string]")
+{
+    SECTION("Handles many decimal digits")
+    {
+        const double a = 3.123456789123456789;
+        const double b = 4.234567891234567891;
+        const double c = 5.345678912345678912;
+
+        Triangle triangle(a, b, c);
+
+        std::ostringstream expected;
+        expected << std::setprecision(
+            std::numeric_limits<double>::max_digits10
+        );
+        expected << "triangle " << a << " " << b << " " << c;
+
+        REQUIRE(triangle.to_string() == expected.str());
+    }
+
+    SECTION("Can restore the original sides")
+    {
+        const double a = 3.123456789123456789;
+        const double b = 4.234567891234567891;
+        const double c = 5.345678912345678912;
+
+        Triangle triangle(a, b, c);
+
+        std::istringstream input(triangle.to_string());
+
+        std::string type;
+        double restoredA;
+        double restoredB;
+        double restoredC;
+
+        input >> type >> restoredA >> restoredB >> restoredC;
+
+        REQUIRE(type == "triangle");
+        REQUIRE(restoredA == a);
+        REQUIRE(restoredB == b);
+        REQUIRE(restoredC == c);
+    }
+}

@@ -136,3 +136,112 @@ TEST_CASE("Rectangle rejects perimeter overflow", "[perimeter overflow]") {
         );
     }
 }
+
+TEST_CASE("Rectangle clone", "[prototype tests]")
+{
+    Rectangle original(4.0, 6.0);
+
+    SECTION("Clone is not nullptr")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned != nullptr);
+    }
+
+    SECTION("Clone has the same type")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(dynamic_cast<Rectangle*>(cloned.get()) != nullptr);
+    }
+
+    SECTION("Clone has the same perimeter")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned->perimeter() == Catch::Approx(original.perimeter()));
+    }
+
+    SECTION("Clone is a different object")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned.get() != &original);
+    }
+}
+
+TEST_CASE("Rectangle can be cloned polymorphically", "[prototype tests]")
+{
+    std::unique_ptr<Figure> original =
+        std::make_unique<Rectangle>(4.0, 6.0);
+
+    auto cloned = original->clone();
+
+    REQUIRE(cloned != nullptr);
+    REQUIRE(dynamic_cast<Rectangle*>(cloned.get()) != nullptr);
+    REQUIRE(cloned->perimeter() == Catch::Approx(original->perimeter()));
+    REQUIRE(cloned.get() != original.get());
+}
+
+TEST_CASE("Rectangle to_string", "[to_string]")
+{
+    SECTION("Converts integer sides")
+    {
+        Rectangle rectangle(4.0, 6.0);
+
+        REQUIRE(rectangle.to_string() == "rectangle 4 6");
+    }
+
+    SECTION("Converts fractional sides")
+    {
+        Rectangle rectangle(2.5, 3.75);
+
+        REQUIRE(rectangle.to_string() == "rectangle 2.5 3.75");
+    }
+
+    SECTION("Converts equal sides")
+    {
+        Rectangle rectangle(5.0, 5.0);
+
+        REQUIRE(rectangle.to_string() == "rectangle 5 5");
+    }
+}
+
+TEST_CASE("Rectangle to_string preserves double precision", "[to_string]")
+{
+    SECTION("Handles many decimal digits")
+    {
+        const double a = 2.345563254254365435;
+        const double b = 7.123456789123456789;
+
+        Rectangle rectangle(a, b);
+
+        std::ostringstream expected;
+        expected << std::setprecision(
+            std::numeric_limits<double>::max_digits10
+        );
+        expected << "rectangle " << a << " " << b;
+
+        REQUIRE(rectangle.to_string() == expected.str());
+    }
+
+    SECTION("Can restore the original sides")
+    {
+        const double a = 2.345563254254365435;
+        const double b = 7.123456789123456789;
+
+        Rectangle rectangle(a, b);
+
+        std::istringstream input(rectangle.to_string());
+
+        std::string type;
+        double restoredA;
+        double restoredB;
+
+        input >> type >> restoredA >> restoredB;
+
+        REQUIRE(type == "rectangle");
+        REQUIRE(restoredA == a);
+        REQUIRE(restoredB == b);
+    }
+}

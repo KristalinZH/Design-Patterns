@@ -97,3 +97,134 @@ TEST_CASE("Circle rejects perimeter overflow", "[perimeter overflow]") {
         );
     }
 }
+
+TEST_CASE("Circle clone", "[prototype tests]")
+{
+    Circle original(5.0);
+
+    SECTION("Clone is not nullptr")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned != nullptr);
+    }
+
+    SECTION("Clone has the same type")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(dynamic_cast<Circle*>(cloned.get()) != nullptr);
+    }
+
+    SECTION("Clone has the same perimeter")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned->perimeter() == Catch::Approx(original.perimeter()));
+    }
+
+    SECTION("Clone is a different object")
+    {
+        auto cloned = original.clone();
+
+        REQUIRE(cloned.get() != &original);
+    }
+}
+
+TEST_CASE("Circle can be cloned polymorphically", "[prototype tests]")
+{
+    std::unique_ptr<Figure> original =
+        std::make_unique<Circle>(2.345687);
+
+    auto cloned = original->clone();
+
+    REQUIRE(cloned != nullptr);
+    REQUIRE(dynamic_cast<Circle*>(cloned.get()) != nullptr);
+    REQUIRE(cloned->perimeter() == Catch::Approx(original->perimeter()));
+    REQUIRE(cloned.get() != original.get());
+}
+
+TEST_CASE("Circle to_string", "[to_string]")
+{
+    SECTION("Converts an integer radius")
+    {
+        Circle circle(5.0);
+
+        REQUIRE(circle.to_string() == "circle 5");
+    }
+
+    SECTION("Converts a fractional radius")
+    {
+        Circle circle(2.5);
+
+        REQUIRE(circle.to_string() == "circle 2.5");
+    }
+
+    SECTION("Converts a small radius")
+    {
+        Circle circle(0.25);
+
+        REQUIRE(circle.to_string() == "circle 0.25");
+    }
+}
+
+TEST_CASE("Circle to_string preserves double precision", "[to_string]")
+{
+    SECTION("Handles many decimal digits")
+    {
+        const double radius = 2.345563254254365435;
+        Circle circle(radius);
+
+        std::ostringstream expected;
+        expected << std::setprecision(
+            std::numeric_limits<double>::max_digits10
+        );
+        expected << "circle " << radius;
+
+        REQUIRE(circle.to_string() == expected.str());
+    }
+
+    SECTION("Handles very small values")
+    {
+        const double radius = std::numeric_limits<double>::denorm_min();
+        Circle circle(radius);
+
+        std::ostringstream expected;
+        expected << std::setprecision(
+            std::numeric_limits<double>::max_digits10
+        );
+        expected << "circle " << radius;
+
+        REQUIRE(circle.to_string() == expected.str());
+    }
+
+    SECTION("Handles very large values")
+    {
+        const double radius = std::numeric_limits<double>::max() / 10.0;
+        Circle circle(radius);
+
+        std::ostringstream expected;
+        expected << std::setprecision(
+            std::numeric_limits<double>::max_digits10
+        );
+        expected << "circle " << radius;
+
+        REQUIRE(circle.to_string() == expected.str());
+    }
+
+    SECTION("Can restore the original radius")
+    {
+        const double radius = 2.345563254254365435;
+        Circle circle(radius);
+
+        std::istringstream input(circle.to_string());
+
+        std::string type;
+        double restoredRadius;
+
+        input >> type >> restoredRadius;
+
+        REQUIRE(type == "circle");
+        REQUIRE(restoredRadius == radius);
+    }
+}
