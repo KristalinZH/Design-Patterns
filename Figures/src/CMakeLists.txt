@@ -12,11 +12,15 @@ target_sources(
         "Figures/Utility/ParamValidation.hpp"
         "Figures/StringConvertible.hpp"
         "Factories/StringFigureFactory.hpp"
+        "Factories/StreamFigureFactory.hpp"
+        "Factories/RandomFigureFactory.hpp"
         "Figures/Circle.cpp"
         "Figures/Triangle.cpp"
         "Figures/Rectangle.cpp"
         "Figures/Utility/ParamValidation.cpp"
         "Factories/StringFigureFactory.cpp"
+        "Factories/StreamFigureFactory.cpp"
+        "Factories/RandomFigureFactory.cpp"
 
 )
 
@@ -25,7 +29,6 @@ target_include_directories(
     PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/Factories"
         "${CMAKE_CURRENT_SOURCE_DIR}/Figures"
-        "${CMAKE_CURRENT_SOURCE_DIR}/IO"
     PRIVATE
         "${CMAKE_CURRENT_SOURCE_DIR}/Figures/Utility"
 )

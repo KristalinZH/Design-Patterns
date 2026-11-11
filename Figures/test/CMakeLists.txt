@@ -16,6 +16,7 @@ target_sources(
         "RectangleTests.cpp"
         "TriangleTests.cpp"
         "StringFigureFactoryTests.cpp"
+        "StreamFigureFactoryTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)
