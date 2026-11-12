@@ -14,6 +14,11 @@ target_sources(
         "Factories/StringFigureFactory.hpp"
         "Factories/StreamFigureFactory.hpp"
         "Factories/RandomFigureFactory.hpp"
+        "InputMethods/InputMethod.hpp"
+        "InputMethods/FileMethod.hpp"
+        "InputMethods/RandomMethod.hpp"
+        "InputMethods/STDINMethod.hpp"
+        "Factories/InputFactory.hpp"
         "Figures/Circle.cpp"
         "Figures/Triangle.cpp"
         "Figures/Rectangle.cpp"
@@ -21,12 +26,17 @@ target_sources(
         "Factories/StringFigureFactory.cpp"
         "Factories/StreamFigureFactory.cpp"
         "Factories/RandomFigureFactory.cpp"
+        "InputMethods/FileMethod.cpp"
+        "InputMethods/RandomMethod.cpp"
+        "InputMethods/STDINMethod.cpp"
+        "Factories/InputFactory.cpp"
 
 )
 
 target_include_directories(
     figureslib
     PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/InputMethods"
         "${CMAKE_CURRENT_SOURCE_DIR}/Factories"
         "${CMAKE_CURRENT_SOURCE_DIR}/Figures"
     PRIVATE

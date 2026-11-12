@@ -18,6 +18,10 @@ target_sources(
         "FactoryTests/StringFigureFactoryTests.cpp"
         "FactoryTests/StreamFigureFactoryTests.cpp"
         "FactoryTests/RandomFigureFactoryTests.cpp"
+        "InputMethodTests/FileMethodTests.cpp"
+        "InputMethodTests/STDINMethodTests.cpp"
+        "InputMethodTests/RandomMethodTests.cpp"
+        "FactoryTests/InputFactoryTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)
