@@ -19,6 +19,11 @@ target_sources(
         "InputMethods/RandomMethod.hpp"
         "InputMethods/STDINMethod.hpp"
         "Factories/InputFactory.hpp"
+        "Registries/FigureRegistry.hpp"
+        "Registries/FigureRegistration.hpp"
+        "Registries/InputMethodRegistry.hpp"
+        "Registries/InputMethodRegistration.hpp"
+
         "Figures/Circle.cpp"
         "Figures/Triangle.cpp"
         "Figures/Rectangle.cpp"
@@ -30,6 +35,10 @@ target_sources(
         "InputMethods/RandomMethod.cpp"
         "InputMethods/STDINMethod.cpp"
         "Factories/InputFactory.cpp"
+        "Registries/FigureRegistry.cpp"
+        "Registries/FigureRegistration.cpp"
+        "Registries/InputMethodRegistry.cpp"
+        "Registries/InputMethodRegistration.cpp"
 
 )
 
@@ -37,6 +46,7 @@ target_include_directories(
     figureslib
     PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/InputMethods"
+        "${CMAKE_CURRENT_SOURCE_DIR}/Registries"
         "${CMAKE_CURRENT_SOURCE_DIR}/Factories"
         "${CMAKE_CURRENT_SOURCE_DIR}/Figures"
     PRIVATE

@@ -22,6 +22,10 @@ target_sources(
         "InputMethodTests/STDINMethodTests.cpp"
         "InputMethodTests/RandomMethodTests.cpp"
         "FactoryTests/InputFactoryTests.cpp"
+        "RegistriesTests/FigureRegistryTests.cpp"
+        "RegistriesTests/FigureRegistrationTests.cpp"
+        "RegistriesTests/InputMethodRegistryTests.cpp"
+        "RegistriesTests/InputMethodRegistrationTests.cpp"
 )
 
 catch_discover_tests(unit-tests ADD_TAGS_AS_LABELS)
