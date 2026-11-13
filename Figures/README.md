@@ -1,36 +1,34 @@
-# Simple CMake project template
+# Figures Project
 
-This repository contains a simple template for new CMake projects.
+## Requirements
 
-## .gitignore
-
-The `.gitignore` file filters:
-
-* Several commonly used directories like `.vs/`, `out/` and `build/`.
-* The [`CMakeUserPresets.json`](https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html)
-  local presets file.
+* CMake 3.xx+
+* A C++ compiler with C++17 support
 
 ## Directory Layout
 
-* `src/` -- Your own sources
-* `test/` -- Your own tests
-* `lib/` -- External third-party libraries
+* `src/` -- Contains the library and the application
+  * `Factories/` -- Library factory classes
+  * `Figures/` -- Library figure classes
+  * `InputMethods/` -- Library input method classes
+  * `Registries/` -- Registry classes and the reflection-like function for registering input method and figure classes
+* `test/` -- Contains the unit tests
+  * `FactoryTests/` -- Tests for the factory classes
+  * `FigureTests/` -- Tests for the figure classes
+  * `InputMethodsTests/` -- Tests for the input method classes
+  * `RegistryTests/` -- Tests for the registry classes
 
-## Catch2
+## Building the project
 
-The template uses [Catch2](https://github.com/catchorg/Catch2) for unit testing.
-It attempts to locate a local copy of Catch2 and if one does not exist,
-fetches it from its GitHub repository.
-
-For more information on how to build and install Catch2 locally,
-check out the [official documentation](https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#installing-catch2-from-git-repository).
+The project uses [Catch2](https://github.com/catchorg/Catch2) for unit testing.
+It fetches it from its GitHub repository.
 
 If you need to build both the debug and release versions,
 when using a multi-configuration generator (e.g., VS),
 you can use a single CMake build directory for both configurations:
 
 ```bash
-cmake -B .build
+cmake -B build
 
 # Debug
 cmake --build build --config Debug
@@ -46,33 +44,12 @@ you need separate build directories:
 
 ```bash
 # Debug
-cmake -B .build-debug -DCMAKE_BUILD_TYPE=Debug
-cmake --build .build-debug
-cmake --install .build-debug
+cmake -B build-debug -DCMAKE_BUILD_TYPE=Debug
+cmake --build build-debug
+cmake --install build-debug
 
 # Release
-cmake -B .build-release -DCMAKE_BUILD_TYPE=Release
-cmake --build .build-release
-cmake --install .build-release
+cmake -B build-release -DCMAKE_BUILD_TYPE=Release
+cmake --build build-release
+cmake --install build-release
 ```
-
-## Dependencies
-
-The template comes with directives for popular libraries such as Catch2 and spdlog.
-Check the [`cmake/Dependencies.cmake`](cmake/Dependencies.cmake) file for more information.
-
-If you want to use a locally cloned copy, set the appropriate
-`FETCHCONTENT_SOURCE_DIR_*` variable.
-You can do so in the `Dependencies.cmake` file itself,
-or by passing the variable on the command line:
-
-```text
--DFETCHCONTENT_SOURCE_DIR_SPDLOG=/path
-```
-
-If you want to always fetch, rather than search for installed packages use:
-
-```text
--DFETCHCONTENT_TRY_FIND_PACKAGE_MODE=NEVER
-```
-
