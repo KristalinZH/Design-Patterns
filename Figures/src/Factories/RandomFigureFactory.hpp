@@ -11,7 +11,6 @@ class RandomFigureFactory : public FigureFactory {
         std::unique_ptr<Figure> create() override;
     private:
         std::mt19937 engine;
-        double random_length();
 };
 
 #endif

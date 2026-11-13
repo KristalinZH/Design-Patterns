@@ -1,50 +1,25 @@
-#include <cmath>
-#include <limits>
+#include <random>
 #include <stdexcept>
-#include <algorithm>
-#include "Circle.hpp"
-#include "Triangle.hpp"
-#include "Rectangle.hpp"
+#include "FigureRegistry.hpp"
+#include "FigureRegistration.hpp"
 #include "RandomFigureFactory.hpp"
 
 RandomFigureFactory::RandomFigureFactory(std::uint32_t seed) : engine(seed) {}
 
-double RandomFigureFactory::random_length() {
-    constexpr double minLength = 1e-100;
-    constexpr double maxLength = std::numeric_limits<double>::max() / 16.0;
-
-    std::uniform_real_distribution<double> distribution(std::log(minLength), std::log(maxLength));
-
-    return std::exp(distribution(engine));
-}
-
 std::unique_ptr<Figure> RandomFigureFactory::create() {
-    std::uniform_int_distribution<int> figureType(0, 2);
+    ensure_builtin_figures_registered();
 
-    switch (figureType(engine)) {
-        case 0:
-            return std::make_unique<Circle>(random_length());
+    FigureRegistry& registry = FigureRegistry::instance();
 
-        case 1:
-            return std::make_unique<Rectangle>(
-                random_length(),
-                random_length()
-            );
+    const std::vector<std::string> types = registry.registered_types();
 
-        case 2: {
-            const double a = random_length();
-            const double b = random_length();
-
-            const double larger = std::max(a, b);
-            const double smaller = std::min(a, b);
-
-            std::uniform_real_distribution<double> deviation(-0.5, 0.5);
-
-            const double c = larger + deviation(engine) * smaller;
-
-            return std::make_unique<Triangle>(a, b, c);
-        }
+    if (types.empty()) {
+        throw std::runtime_error("No figure types registered");
     }
 
-    throw std::runtime_error("Failed to generate a figure");
+    std::uniform_int_distribution<std::size_t> distribution(0, types.size() - 1);
+
+    const std::string& selected_type = types[distribution(engine)];
+
+    return registry.create_random(selected_type, engine);
 }
